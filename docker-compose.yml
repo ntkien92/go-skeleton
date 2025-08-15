@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8.0.43-debian
+    container_name: mysql_db
+    environment:
+      - MYSQL_DATABASE=blogs
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=12345678
+      - MYSQL_ROOT_PASSWORD=12345678
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile.dev
+  #   image: blog-api
+  #   container_name: blog-api
+  #   restart: always
+  #   hostname: blog-api
+  #   networks:
+  #     - blog-api-network
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     - name=value
+
+networks:
+  blog-api-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
