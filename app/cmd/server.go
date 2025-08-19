@@ -20,8 +20,12 @@ type ApiServer struct {
 
 	mysqlDsn string
 
-	mainHandler    interfaces.MainHandlerInterface
-	articleHandler interfaces.ArticleHandlerInterface
+	mainHandler  interfaces.MainHandlerInterface
+	dbRepository interfaces.DbRepositoryInterface
+
+	articleRepository interfaces.ArticleRepositoryInterface
+	articleService    interfaces.ArticleServiceInterface
+	articleHandler    interfaces.ArticleHandlerInterface
 
 	echo *echo.Echo
 }

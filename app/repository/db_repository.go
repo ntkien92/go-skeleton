@@ -54,3 +54,11 @@ func (r *DbRepository) Close() {
 		r.sqlDB.Close()
 	}
 }
+
+func (r *DbRepository) GetDB() *gorm.DB {
+	return r.db
+}
+
+func (r *DbRepository) GetSqlDB() *sql.DB {
+	return r.sqlDB
+}

@@ -8,10 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ArticleHandler struct{}
+type ArticleHandler struct {
+	articleService interfaces.ArticleServiceInterface
+}
 
-func NewArticleHandler() interfaces.ArticleHandlerInterface {
-	return &ArticleHandler{}
+func NewArticleHandler(
+	articleService interfaces.ArticleServiceInterface,
+) interfaces.ArticleHandlerInterface {
+	return &ArticleHandler{
+		articleService: articleService,
+	}
 }
 
 func (h *ArticleHandler) GetList() echo.HandlerFunc {
