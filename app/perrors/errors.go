@@ -1,4 +1,4 @@
-package errors
+package perrors
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 )
 
 type ErrorItem struct {
-	Code    int         `json:"code"`
+	Code    ErrorCode   `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 	Caller  *CallerItem `json:"caller"`
@@ -21,7 +21,7 @@ type CallerItem struct {
 }
 
 func (item *ErrorItem) Error() string {
-	return "[" + strconv.Itoa(item.Code) + "]" + item.Message + " -> " + item.ToJSON()
+	return "[" + strconv.Itoa(int(item.Code)) + "]" + item.Message + " -> " + item.ToJSON()
 }
 
 func (item *ErrorItem) ToJSON() string {
@@ -31,7 +31,7 @@ func (item *ErrorItem) ToJSON() string {
 
 // constructor for new ErrorItem
 func New(
-	code int,
+	code ErrorCode,
 	message string,
 	data interface{},
 ) error {
@@ -67,4 +67,14 @@ func ToErrorItem(err error) *ErrorItem {
 	} else {
 		return nil
 	}
+}
+
+func HasNotFound(errs []error) bool {
+	for _, err := range errs {
+		if ToErrorItem(err).Code == NotFound {
+			return true
+		}
+	}
+
+	return false
 }

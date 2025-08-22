@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"blog-api/errors"
-	"blog-api/response"
+	"blog-api/dto"
+	"blog-api/perrors"
 	"fmt"
 	"net/http"
 	"os"
@@ -39,7 +39,7 @@ func (server *ApiServer) setMiddleware() {
 		if httpErr, ok := err.(*echo.HTTPError); ok {
 			code = httpErr.Code
 		}
-		resp := response.NewApiResponse(c.Path())
+		resp := dto.NewApiResponse(c.Path())
 		resp.Status.Code = code
 		resp.Status.Type = http.StatusText(code)
 
@@ -50,13 +50,13 @@ func (server *ApiServer) setMiddleware() {
 func (server *ApiServer) VerifyJwt() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			resp := response.NewApiResponse(c.Path())
+			resp := dto.NewApiResponse(c.Path())
 			resp.Status.Code = http.StatusUnauthorized
 			resp.Status.Type = http.StatusText(http.StatusUnauthorized)
 
 			auth_header := c.Request().Header.Get("Authorization")
 			if auth_header == "" {
-				resp.Errors = append(resp.Errors, errors.New(
+				resp.Errors = append(resp.Errors, perrors.New(
 					-1,
 					"Authorization header is empty",
 					nil,
@@ -70,7 +70,7 @@ func (server *ApiServer) VerifyJwt() echo.MiddlewareFunc {
 			}
 
 			if jwt == "" {
-				resp.Errors = append(resp.Errors, errors.New(
+				resp.Errors = append(resp.Errors, perrors.New(
 					-1,
 					"JWT is empty",
 					nil,
@@ -80,7 +80,7 @@ func (server *ApiServer) VerifyJwt() echo.MiddlewareFunc {
 
 			err := verifyJWT(jwt)
 			if err != nil {
-				resp.Errors = append(resp.Errors, errors.New(
+				resp.Errors = append(resp.Errors, perrors.New(
 					-1,
 					err.Error(),
 					nil,

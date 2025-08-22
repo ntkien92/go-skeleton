@@ -25,8 +25,19 @@ Available options:
 	},
 }
 
+var dbSeedCommand = &cobra.Command{
+	Use:   "seed",
+	Short: "seed",
+	Long:  "",
+	Args:  cobra.ExactArgs(0),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return repository.Seed(os.Getenv("MYSQL_DSN"))
+	},
+}
+
 func main() {
 	rootCmd.AddCommand(migratorCommand)
+	rootCmd.AddCommand(dbSeedCommand)
 
 	if err := rootCmd.Execute(); err != nil {
 		panic(err)

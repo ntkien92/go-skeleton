@@ -1,9 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE articles (
+CREATE TABLE categories (
     id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
+    name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -11,5 +10,5 @@ CREATE TABLE articles (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE articles;
+DROP TABLE categories;
 -- +goose StatementEnd
