@@ -13,20 +13,24 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile.dev
-  #   image: blog-api
-  #   container_name: blog-api
-  #   restart: always
-  #   hostname: blog-api
-  #   networks:
-  #     - blog-api-network
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     - name=value
+  local:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.local
+    image: blog-api
+    container_name: blog-api
+    hostname: blog-api
+    depends_on:
+      - db
+    networks:
+      - blog-api-network
+    ports:
+      - 8080:8080
+    tty: true
+    volumes:
+      - .:/app
+    environment:
+      - MYSQL_DSN="user:12345678@tcp(127.0.0.1:3306)/blogs?charset=utf8mb4&parseTime=true&loc=Local"
 
 networks:
   blog-api-network:
