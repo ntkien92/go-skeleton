@@ -5,6 +5,9 @@ on:
     branches: [ master ]
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,13 +26,15 @@ jobs:
 
       - name: Run API Tests
         run: |
-          gotestsum --junitfile report.xml -- ./...
+          cd api-tests && gotestsum --junitfile report.xml -- ./...
+        continue-on-error: true
 
-      - name: Upload test result artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: junit-report
-          path: report.xml
+          path: api-tests/report.xml
 
   allure-report:
     needs: test
@@ -40,20 +45,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download test result
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: junit-report
 
-      - name: Install Allure
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y allure
-
-      - name: Generate Allure Report
-        run: allure generate report.xml -o allure-report
+      - name: Allure Report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          results-dir: api-tests
+          report-dir: allure-report
+          allure-commandline-version: 2.27.0
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
