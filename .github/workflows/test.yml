@@ -1,0 +1,59 @@
+name: API Test and Allure Report
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.25
+
+      - name: Install gotestsum
+        run: go install gotest.tools/gotestsum@latest
+
+      - name: Run API Tests
+        run: |
+          gotestsum --junitfile report.xml -- ./...
+
+      - name: Upload test result artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-report
+          path: report.xml
+
+  allure-report:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download test result
+        uses: actions/download-artifact@v3
+        with:
+          name: junit-report
+
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y allure
+
+      - name: Generate Allure Report
+        run: allure generate report.xml -o allure-report
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report

@@ -62,6 +62,7 @@ func (server *ApiServer) Start(port string) {
 
 	go func() {
 		if err := server.echo.Start(":" + port); err != nil && err != http.ErrServerClosed {
+			log.Errorf("Error when starting...", err)
 			server.echo.Logger.Fatal("shuting down the server")
 		}
 	}()
