@@ -18,12 +18,16 @@ type GetDetailArticleQueryParams struct {
 	Id *string
 }
 
-func (p GetDetailArticleQueryParams) Map() Article {
+func (p GetDetailArticleQueryParams) Map() (Article, error) {
 	var artile Article
 	if p.Id != nil {
-		id, _ := uuid.Parse(*p.Id)
+		id, err := uuid.Parse(*p.Id)
+		if err != nil {
+			return artile, err
+		}
+
 		artile.ID = id
 	}
 
-	return artile
+	return artile, nil
 }

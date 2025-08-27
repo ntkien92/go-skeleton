@@ -9,7 +9,8 @@ import (
 	"syscall"
 
 	"github.com/labstack/echo/v4"
-	log "github.com/sirupsen/logrus"
+	"github.com/labstack/gommon/log"
+	"github.com/sirupsen/logrus"
 )
 
 const API_SERVER_DEFAULT_PORT string = "8080"
@@ -41,9 +42,9 @@ func (server *ApiServer) Run() {
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGTERM, syscall.SIGINT, syscall.SIGQUIT)
-	log.Infof("signal waiting:")
+	logrus.Infof("signal waiting:")
 	s := <-sigCh
-	log.Infof("signal received:%s", s.String())
+	logrus.Infof("signal received:%s", s.String())
 	server.Teardown()
 }
 

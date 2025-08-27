@@ -11,14 +11,8 @@ import (
 var seedSQL string
 
 func Seed(
-	dsn string,
+	db *sql.DB,
 ) error {
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
 	queries := strings.Split(seedSQL, ";")
 	for _, q := range queries {
 		q = strings.TrimSpace(q)

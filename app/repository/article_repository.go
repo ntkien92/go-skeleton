@@ -50,7 +50,18 @@ func (r ArticleRepository) GetDetail(ctx context.Context, params model.GetDetail
 	var errs []error
 	var result *model.Article
 
-	if err := r.db.Where(params.Map()).First(&result).Error; err != nil {
+	paramsMap, err := params.Map()
+	if err != nil {
+		errs = append(errs, perrors.New(
+			perrors.ArticleInvalidIDRepository,
+			err.Error(),
+			params,
+		))
+
+		return nil, errs
+	}
+
+	if err := r.db.Where(paramsMap).First(&result).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			errs = append(errs, perrors.New(
 				perrors.NotFound,

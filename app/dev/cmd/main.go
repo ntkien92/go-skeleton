@@ -2,6 +2,7 @@ package main
 
 import (
 	"blog-api/repository"
+	"database/sql"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -31,7 +32,13 @@ var dbSeedCommand = &cobra.Command{
 	Long:  "",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return repository.Seed(os.Getenv("MYSQL_DSN"))
+		db, err := sql.Open("mysql", os.Getenv("MYSQL_DSN"))
+		if err != nil {
+			return err
+		}
+		defer db.Close()
+
+		return repository.Seed(db)
 	},
 }
 
