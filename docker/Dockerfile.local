@@ -2,7 +2,13 @@ FROM golang:1.25.0-trixie AS dev
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y make sudo
+RUN apt-get update && apt-get install -y make sudo && apt-get install -y tzdata
+
+RUN go install github.com/swaggo/swag/cmd/swag@latest \
+  && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.1 \
+  && CGO_ENABLED=0 go install -ldflags "-s -w -extldflags '-static'" github.com/go-delve/delve/cmd/dlv@latest \
+  && go install github.com/air-verse/air@v1.62.0 \
+  && go install go.uber.org/mock/mockgen@v0.6.0
 
 ARG user=appuser
 ARG group=appuser

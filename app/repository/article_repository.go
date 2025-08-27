@@ -4,9 +4,9 @@ import (
 	"blog-api/interfaces"
 	"blog-api/model"
 	"blog-api/perrors"
+	"context"
 	"errors"
 
-	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
@@ -22,7 +22,7 @@ func NewArticleRepository(
 	}
 }
 
-func (r ArticleRepository) GetList(ctx echo.Context) ([]model.Article, []error) {
+func (r ArticleRepository) GetList(ctx context.Context) ([]model.Article, []error) {
 	var result []model.Article
 	var errs []error
 
@@ -35,7 +35,7 @@ func (r ArticleRepository) GetList(ctx echo.Context) ([]model.Article, []error) 
 	return result, nil
 }
 
-func (r ArticleRepository) Create(ctx echo.Context, data model.Article) (string, []error) {
+func (r ArticleRepository) Create(ctx context.Context, data model.Article) (string, []error) {
 	var errs []error
 
 	if err := r.db.Create(&data).Error; err != nil {
@@ -46,7 +46,7 @@ func (r ArticleRepository) Create(ctx echo.Context, data model.Article) (string,
 	return data.ID.String(), nil
 }
 
-func (r ArticleRepository) GetDetail(ctx echo.Context, params model.GetDetailArticleQueryParams) (*model.Article, []error) {
+func (r ArticleRepository) GetDetail(ctx context.Context, params model.GetDetailArticleQueryParams) (*model.Article, []error) {
 	var errs []error
 	var result *model.Article
 

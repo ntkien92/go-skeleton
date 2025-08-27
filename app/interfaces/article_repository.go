@@ -2,12 +2,11 @@ package interfaces
 
 import (
 	"blog-api/model"
-
-	"github.com/labstack/echo/v4"
+	"context"
 )
 
 type ArticleRepositoryInterface interface {
-	GetList(ctx echo.Context) ([]model.Article, []error)
-	GetDetail(ctx echo.Context, params model.GetDetailArticleQueryParams) (*model.Article, []error)
-	Create(ctx echo.Context, data model.Article) (string, []error)
+	GetList(ctx context.Context) ([]model.Article, []error)
+	GetDetail(ctx context.Context, params model.GetDetailArticleQueryParams) (*model.Article, []error)
+	Create(ctx context.Context, data model.Article) (string, []error)
 }

@@ -24,7 +24,7 @@ func (h *ArticleHandler) GetList() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		response := dto.NewApiResponse(c.Path())
 
-		data, errs := h.articleService.GetList(c)
+		data, errs := h.articleService.GetList(c.Request().Context())
 		if errs != nil {
 			response.Errors = errs
 			return c.JSON(http.StatusBadRequest, response)
@@ -51,7 +51,7 @@ func (h *ArticleHandler) GetDetail() echo.HandlerFunc {
 
 		response.Request = request
 
-		data, errs := h.articleService.GetDetail(c, request)
+		data, errs := h.articleService.GetDetail(c.Request().Context(), request)
 		if errs != nil {
 			response.Errors = errs
 			return c.JSON(http.StatusBadRequest, response)
@@ -76,7 +76,7 @@ func (h *ArticleHandler) Create() echo.HandlerFunc {
 		}
 		response.Request = request
 
-		data, errs := h.articleService.Create(c, request)
+		data, errs := h.articleService.Create(c.Request().Context(), request)
 		if errs != nil {
 			response.Errors = errs
 			return c.JSON(http.StatusBadRequest, response)

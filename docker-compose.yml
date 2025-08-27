@@ -13,6 +13,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - blog-api-network
   local:
     build:
       context: .
@@ -28,9 +30,8 @@ services:
       - 8080:8080
     tty: true
     volumes:
-      - .:/app
-    environment:
-      - MYSQL_DSN="user:12345678@tcp(127.0.0.1:3306)/blogs?charset=utf8mb4&parseTime=true&loc=Local"
+      - ./app:/app
+      - ./config/local.yaml:/config/config.yml
 
 networks:
   blog-api-network:

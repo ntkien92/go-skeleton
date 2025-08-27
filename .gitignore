@@ -2,3 +2,9 @@
 data
 
 api-tests/report.xml
+
+config/*
+!config/example.yaml
+
+app/coverage.out
+app/coverage.html

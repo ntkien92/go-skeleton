@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"blog-api/config"
 	"blog-api/interfaces"
 	"net/http"
 	"os"
@@ -18,7 +19,7 @@ type ApiServer struct {
 	apiRunType string
 	logLevel   string
 
-	mysqlDsn string
+	config config.Config
 
 	mainHandler  interfaces.MainHandlerInterface
 	dbRepository interfaces.DbRepositoryInterface

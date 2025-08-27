@@ -1,14 +1,17 @@
 package cmd
 
-import "os"
+import "blog-api/config"
 
 func (server *ApiServer) loadEnv() []string {
 	var errors []string
 
-	server.mysqlDsn = os.Getenv("MYSQL_DSN")
-	if server.mysqlDsn == "" {
-		errors = append(errors, "MYSQL_DSN not set")
+	configPath := "/config/config.yml"
+	config, err := config.NewConfig(configPath)
+	if err != nil {
+		errors = append(errors, err.Error())
 	}
+
+	server.config = config
 
 	return errors
 }

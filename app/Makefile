@@ -29,3 +29,11 @@ seed:
 	@if [ "$(APP_ENV)" = "local" ]; then \
 		go run dev/cmd/main.go seed; \
 	fi
+
+.PHONY: test-coverage
+test-coverage:
+	@if [ "$(APP_ENV)" = "local" ]; then \
+		go test $$(go list ./... | grep -v /cmd) -coverprofile=coverage.out && \
+		go tool cover -func=coverage.out && \
+		go tool cover -html=coverage.out -o coverage.html; \
+	fi

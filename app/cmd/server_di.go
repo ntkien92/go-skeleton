@@ -11,7 +11,7 @@ import (
 func (server *ApiServer) dependenciesInjection() {
 	server.mainHandler = handler.NewMainHandler()
 
-	server.dbRepository = repository.NewDbRepository(server.mysqlDsn)
+	server.dbRepository = repository.NewDbRepository(server.config.Database.Dsn)
 	err := server.dbRepository.InitializeDB()
 	if err != nil {
 		logrus.Fatal(err)

@@ -11,7 +11,7 @@ var Global *Config
 
 func Init() {
 	Global = &Config{
-		BaseURL: getenv("BASE_URL", "http://localhost:8081/api"),
+		BaseURL: getenv("BASE_URL", "http://localhost:8080/api"),
 		Token:   "",
 	}
 }

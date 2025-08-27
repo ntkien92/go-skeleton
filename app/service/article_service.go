@@ -4,9 +4,8 @@ import (
 	"blog-api/dto"
 	"blog-api/interfaces"
 	"blog-api/model"
+	"context"
 	"errors"
-
-	"github.com/labstack/echo/v4"
 )
 
 type ArticleService struct {
@@ -21,7 +20,7 @@ func NewArticleService(
 	}
 }
 
-func (s *ArticleService) GetList(c echo.Context) ([]dto.ArticleResponse, []error) {
+func (s *ArticleService) GetList(c context.Context) ([]dto.ArticleResponse, []error) {
 	articles, errs := s.articleRepository.GetList(c)
 	if errs != nil {
 		return nil, errs
@@ -31,7 +30,7 @@ func (s *ArticleService) GetList(c echo.Context) ([]dto.ArticleResponse, []error
 	return response, nil
 }
 
-func (s *ArticleService) GetDetail(ctx echo.Context, params dto.GetArticleDetailRequest) (*dto.ArticleResponse, []error) {
+func (s *ArticleService) GetDetail(ctx context.Context, params dto.GetArticleDetailRequest) (*dto.ArticleResponse, []error) {
 	article, errs := s.articleRepository.GetDetail(ctx, model.GetDetailArticleQueryParams{
 		Id: &params.Id,
 	})
@@ -45,7 +44,7 @@ func (s *ArticleService) GetDetail(ctx echo.Context, params dto.GetArticleDetail
 	return &response, nil
 }
 
-func (s *ArticleService) Create(ctx echo.Context, data dto.CreateArticleRequest) (*dto.ArticleResponse, []error) {
+func (s *ArticleService) Create(ctx context.Context, data dto.CreateArticleRequest) (*dto.ArticleResponse, []error) {
 	id, errs := s.articleRepository.Create(ctx, model.Article{
 		Title:   data.Title,
 		Content: data.Content,
