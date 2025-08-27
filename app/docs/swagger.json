@@ -1,0 +1,96 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/articles/{id}": {
+            "get": {
+                "description": "get string by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Show an article",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Article ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/healthy": {
+            "get": {
+                "description": "Check health",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "main"
+                ],
+                "summary": "Check health",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ApiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.ApiResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "errors": {
+                    "type": "array",
+                    "items": {}
+                },
+                "path": {
+                    "type": "string"
+                },
+                "process_id": {
+                    "type": "string"
+                },
+                "request": {},
+                "status": {
+                    "$ref": "#/definitions/dto.ApiResponseStatus"
+                }
+            }
+        },
+        "dto.ApiResponseStatus": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

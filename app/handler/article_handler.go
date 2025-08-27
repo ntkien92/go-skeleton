@@ -5,7 +5,7 @@ import (
 	"blog-api/interfaces"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	echo "github.com/labstack/echo/v4"
 )
 
 type ArticleHandler struct {
@@ -36,6 +36,14 @@ func (h *ArticleHandler) GetList() echo.HandlerFunc {
 	}
 }
 
+// @Summary      Show an article
+// @Description  get string by ID
+// @Tags         articles
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "Article ID"
+// @Success      200  {object}  dto.ApiResponse
+// @Router       /api/articles/{id} [get]
 func (h *ArticleHandler) GetDetail() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		response := dto.NewApiResponse(c.Path())

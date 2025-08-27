@@ -1,0 +1,62 @@
+definitions:
+  dto.ApiResponse:
+    properties:
+      data: {}
+      errors:
+        items: {}
+        type: array
+      path:
+        type: string
+      process_id:
+        type: string
+      request: {}
+      status:
+        $ref: '#/definitions/dto.ApiResponseStatus'
+    type: object
+  dto.ApiResponseStatus:
+    properties:
+      code:
+        type: integer
+      type:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/articles/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ApiResponse'
+      summary: Show an article
+      tags:
+      - articles
+  /api/healthy:
+    get:
+      consumes:
+      - application/json
+      description: Check health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ApiResponse'
+      summary: Check health
+      tags:
+      - main
+swagger: "2.0"

@@ -37,3 +37,16 @@ test-coverage:
 		go tool cover -func=coverage.out && \
 		go tool cover -html=coverage.out -o coverage.html; \
 	fi
+
+.PHONY: lint
+lint:
+	golangci-lint run ./...
+
+.PHONY: generate-swagger
+generate-swagger:
+	swag init -g /handler/main_handler.go -o ./docs
+
+.PHONY: dev
+dev:
+	make generate-swagger
+	go run main.go

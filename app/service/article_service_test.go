@@ -2,7 +2,6 @@ package service
 
 import (
 	"blog-api/dto"
-	"blog-api/interfaces"
 	"blog-api/model"
 	"context"
 	"errors"
@@ -11,7 +10,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/suite"
 )
 
 type MockRepo struct {
@@ -42,20 +40,7 @@ func (m *MockRepo) Create(ctx context.Context, data model.Article) (string, []er
 	return "", nil
 }
 
-type ArticleServiceTestSuite struct {
-	suite.Suite
-	repo    *MockRepo
-	service interfaces.ArticleServiceInterface
-}
-
-func (s *ArticleServiceTestSuite) SetupTest() {
-	s.repo = new(MockRepo)
-	s.service = NewArticleService(s.repo)
-}
-
-
-
-func (s *ArticleServiceTestSuite) TestGetArticleDetail_Cases() {
+func TestGetArticleDetail(t *testing.T) {
 	ids := []uuid.UUID{
 		uuid.New(),
 		uuid.New(),
@@ -86,35 +71,31 @@ func (s *ArticleServiceTestSuite) TestGetArticleDetail_Cases() {
 		},
 	}
 
+	repo := new(MockRepo)
+	service := NewArticleService(repo)
+
 	for _, tt := range tests {
-		s.Run(tt.name, func() {
-			s.repo.On("GetDetail", context.TODO(), model.GetDetailArticleQueryParams{
+		t.Run(tt.name, func(t *testing.T) {
+			repo.On("GetDetail", mock.Anything, model.GetDetailArticleQueryParams{
 				Id: &tt.inputID,
 			}).Return(tt.mockReturn, tt.mockError)
 
-			article, errs := s.service.GetDetail(context.TODO(), dto.GetArticleDetailRequest{
+			article, errs := service.GetDetail(context.TODO(), dto.GetArticleDetailRequest{
 				Id: tt.inputID,
 			})
 
 			if tt.expectErr {
 				for _, err := range errs {
-					assert.Error(s.T(), err)
+					assert.Error(t, err)
 				}
-				assert.Nil(s.T(), article)
+				assert.Nil(t, article)
 			} else {
-				assert.Zero(s.T(), len(errs))
-				assert.NotNil(s.T(), article)
-				assert.Equal(s.T(), tt.mockReturn.Title, article.Title)
+				assert.Zero(t, len(errs))
+				assert.NotNil(t, article)
+				assert.Equal(t, tt.mockReturn.Title, article.Title)
 			}
 
-			s.repo.AssertExpectations(s.T())
+			repo.AssertExpectations(t)
 		})
 	}
-}
-
-// ----------------------
-// Run suite
-// ----------------------
-func TestArticleServiceTestSuite(t *testing.T) {
-	suite.Run(t, new(ArticleServiceTestSuite))
 }
