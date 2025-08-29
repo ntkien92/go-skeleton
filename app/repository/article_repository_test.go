@@ -34,7 +34,7 @@ func TestGetList(t *testing.T) {
 
 	repo := NewArticleRepository(db)
 
-	result, errs := repo.GetList(context.TODO())
+	result, errs := repo.GetList(context.TODO(), nil)
 
 	assert.Nil(t, errs)
 	assert.Len(t, result, 1)

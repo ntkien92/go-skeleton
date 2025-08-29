@@ -1,12 +1,14 @@
 package main
 
 import (
+	"blog-api/config"
 	"blog-api/repository"
 	"database/sql"
-	"os"
 
 	"github.com/spf13/cobra"
 )
+
+var cfg config.Config
 
 var rootCmd = &cobra.Command{}
 
@@ -22,7 +24,7 @@ Available options:
 `,
 	Args: cobra.ExactArgs(1),
 	RunE: func(_ *cobra.Command, args []string) error {
-		return repository.Migrator(os.Getenv("MYSQL_DSN"), repository.MigrateAction(args[0]))
+		return repository.Migrator(cfg.Database.Dsn, repository.MigrateAction(args[0]))
 	},
 }
 
@@ -32,7 +34,7 @@ var dbSeedCommand = &cobra.Command{
 	Long:  "",
 	Args:  cobra.ExactArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		db, err := sql.Open("mysql", os.Getenv("MYSQL_DSN"))
+		db, err := sql.Open("mysql", cfg.Database.Dsn)
 		if err != nil {
 			return err
 		}
@@ -43,6 +45,13 @@ var dbSeedCommand = &cobra.Command{
 }
 
 func main() {
+	configPath := "/config/config.yml"
+	con, err := config.NewConfig(configPath)
+	cfg = con
+	if err != nil {
+		panic(err)
+	}
+
 	rootCmd.AddCommand(migratorCommand)
 	rootCmd.AddCommand(dbSeedCommand)
 

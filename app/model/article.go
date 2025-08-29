@@ -8,10 +8,13 @@ import (
 
 type Article struct {
 	ModelUUID
-	Title     string
-	Content   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Title      string
+	Content    string
+	CategoryID uuid.UUID
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+
+	Category *Category `gorm:"foreignKey:CategoryID"`
 }
 
 type GetDetailArticleQueryParams struct {

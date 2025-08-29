@@ -54,7 +54,7 @@ func New(
 }
 
 func IsErrorItem(err error) bool {
-	if reflect.TypeOf(err).String() == "*errors.ErrorItem" {
+	if reflect.TypeOf(err).String() == "*perrors.ErrorItem" {
 		return true
 	} else {
 		return false
@@ -62,7 +62,7 @@ func IsErrorItem(err error) bool {
 }
 
 func ToErrorItem(err error) *ErrorItem {
-	if reflect.TypeOf(err).String() == "*errors.ErrorItem" {
+	if reflect.TypeOf(err).String() == "*perrors.ErrorItem" {
 		return err.(*ErrorItem)
 	} else {
 		return nil
@@ -71,7 +71,7 @@ func ToErrorItem(err error) *ErrorItem {
 
 func HasNotFound(errs []error) bool {
 	for _, err := range errs {
-		if ToErrorItem(err).Code == NotFound {
+		if ToErrorItem(err) != nil && ToErrorItem(err).Code == NotFound {
 			return true
 		}
 	}

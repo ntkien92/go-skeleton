@@ -18,6 +18,7 @@ type ApiResponse struct {
 	Request   interface{}       `json:"request"`
 	Errors    []error           `json:"errors"`
 	Data      interface{}       `json:"data"`
+	Metadata  interface{}       `json:"metadata"`
 }
 
 func (response *ApiResponse) ToJSON() string {

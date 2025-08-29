@@ -6,11 +6,12 @@ import (
 )
 
 type ArticleResponse struct {
-	ID        string    `json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID        string            `json:"id"`
+	Title     string            `json:"title"`
+	Content   string            `json:"content"`
+	CreatedAt time.Time         `json:"createdAt"`
+	UpdatedAt time.Time         `json:"updatedAt"`
+	Category  *CategoryResponse `json:"category,omitempty"`
 }
 
 func NewListArticleResponse(data []model.Article) []ArticleResponse {
@@ -23,13 +24,24 @@ func NewListArticleResponse(data []model.Article) []ArticleResponse {
 }
 
 func NewArticleDetailResponse(data model.Article) ArticleResponse {
-	return ArticleResponse{
+	article := ArticleResponse{
 		ID:        data.ID.String(),
 		Title:     data.Title,
 		Content:   data.Content,
 		CreatedAt: data.CreatedAt,
 		UpdatedAt: data.UpdatedAt,
 	}
+
+	if data.Category != nil {
+		category := NewCategoryDetailResponse(*data.Category)
+		article.Category = &category
+	}
+
+	return article
+}
+
+type GetListArticleRequest struct {
+	PagingRequest
 }
 
 type CreateArticleRequest struct {

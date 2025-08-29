@@ -16,7 +16,7 @@ type MockRepo struct {
 	mock.Mock
 }
 
-func (m *MockRepo) GetList(ctx context.Context) ([]model.Article, []error) {
+func (m *MockRepo) GetList(ctx context.Context, preloads []string) ([]model.Article, []error) {
 	return nil, nil
 }
 

@@ -6,7 +6,7 @@ import (
 )
 
 type ArticleRepositoryInterface interface {
-	GetList(ctx context.Context) ([]model.Article, []error)
+	GetList(ctx context.Context, preloads []string) ([]model.Article, []error)
 	GetDetail(ctx context.Context, params model.GetDetailArticleQueryParams) (*model.Article, []error)
 	Create(ctx context.Context, data model.Article) (string, []error)
 }

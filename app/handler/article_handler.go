@@ -24,10 +24,19 @@ func (h *ArticleHandler) GetList() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		response := dto.NewApiResponse(c.Path())
 
+		var request dto.GetListArticleRequest
+		var errs []error
+
+		if err := c.Bind(&request); err != nil {
+			errs = append(errs, err)
+			return errorResponse(c, response, errs)
+		}
+
+		response.Request = request
+
 		data, errs := h.articleService.GetList(c.Request().Context())
 		if errs != nil {
-			response.Errors = errs
-			return c.JSON(http.StatusBadRequest, response)
+			return errorResponse(c, response, errs)
 		}
 
 		response.Data = data
@@ -53,16 +62,14 @@ func (h *ArticleHandler) GetDetail() echo.HandlerFunc {
 
 		if err := c.Bind(&request); err != nil {
 			errs = append(errs, err)
-			response.Errors = errs
-			return c.JSON(http.StatusBadRequest, response)
+			return errorResponse(c, response, errs)
 		}
 
 		response.Request = request
 
 		data, errs := h.articleService.GetDetail(c.Request().Context(), request)
 		if errs != nil {
-			response.Errors = errs
-			return c.JSON(http.StatusBadRequest, response)
+			return errorResponse(c, response, errs)
 		}
 
 		response.Data = data
@@ -79,15 +86,13 @@ func (h *ArticleHandler) Create() echo.HandlerFunc {
 		var errs []error
 		if err := c.Bind(&request); err != nil {
 			errs = append(errs, err)
-			response.Errors = errs
-			return c.JSON(http.StatusBadRequest, response)
+			return errorResponse(c, response, errs)
 		}
 		response.Request = request
 
 		data, errs := h.articleService.Create(c.Request().Context(), request)
 		if errs != nil {
-			response.Errors = errs
-			return c.JSON(http.StatusBadRequest, response)
+			return errorResponse(c, response, errs)
 		}
 
 		response.Data = data

@@ -4,6 +4,7 @@ import (
 	"blog-api/dto"
 	"blog-api/interfaces"
 	"blog-api/model"
+	"blog-api/repository"
 	"context"
 	"errors"
 )
@@ -21,7 +22,9 @@ func NewArticleService(
 }
 
 func (s *ArticleService) GetList(c context.Context) ([]dto.ArticleResponse, []error) {
-	articles, errs := s.articleRepository.GetList(c)
+	articles, errs := s.articleRepository.GetList(c, []string{
+		repository.Category,
+	})
 	if errs != nil {
 		return nil, errs
 	}

@@ -22,11 +22,16 @@ func NewArticleRepository(
 	}
 }
 
-func (r ArticleRepository) GetList(ctx context.Context) ([]model.Article, []error) {
+func (r ArticleRepository) GetList(
+	ctx context.Context,
+	preloads []string,
+) ([]model.Article, []error) {
 	var result []model.Article
 	var errs []error
 
-	query := r.db.Model(model.Article{}).Find(&result)
+	query := applyPreloads(r.db, preloads)
+
+	query = query.Model(model.Article{}).Find(&result)
 	if err := query.Error; err != nil {
 		errs = append(errs, err)
 		return nil, errs
