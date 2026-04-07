@@ -8,3 +8,5 @@ app/env/*
 
 app/coverage.out
 app/coverage.html
+
+docker/db

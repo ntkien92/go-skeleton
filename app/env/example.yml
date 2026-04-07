@@ -1,4 +1,4 @@
 environment: development
 
 database:
-  dsn: "user:password@tcp(host:3306)/database_name"
+  dsn: "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"

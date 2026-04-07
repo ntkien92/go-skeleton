@@ -1,18 +1,26 @@
 services:
   db:
-    image: mysql:9.6.0
-    container_name: mysql_db
-    environment:
-      - MYSQL_DATABASE=blogs
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=12345678
-      - MYSQL_ROOT_PASSWORD=12345678
-    ports:
-      - "3306:3306"
+    image: postgres:13.2
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./docker/db:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
     networks:
       - blog-api-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 30s # Check every 30 seconds
+      timeout: 10s # Timeout for each check is 10 seconds
+      retries: 5 # Will retry 5 times before reporting the service as unhealthy
+      start_period: 10s # Initial startup time before the first check
   # local:
   #   build:
   #     context: .

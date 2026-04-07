@@ -4,7 +4,7 @@ import (
 	"blog-api/interfaces"
 	"database/sql"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -29,7 +29,7 @@ func NewDbRepository(
 }
 
 func (r *DbRepository) InitializeDB() error {
-	db, err := gorm.Open(mysql.Open(r.dsn))
+	db, err := gorm.Open(postgres.Open(r.dsn), &gorm.Config{})
 	if err != nil {
 		return err
 	}
