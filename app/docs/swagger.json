@@ -69,6 +69,7 @@
                     "type": "array",
                     "items": {}
                 },
+                "metadata": {},
                 "path": {
                     "type": "string"
                 },

@@ -3,8 +3,8 @@ data
 
 api-tests/report.xml
 
-config/*
-!config/example.yaml
+app/env/*
+!app/env/example.yml
 
 app/coverage.out
 app/coverage.html

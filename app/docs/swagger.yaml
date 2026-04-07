@@ -5,6 +5,7 @@ definitions:
       errors:
         items: {}
         type: array
+      metadata: {}
       path:
         type: string
       process_id:

@@ -80,6 +80,7 @@ const docTemplate = `{
                     "type": "array",
                     "items": {}
                 },
+                "metadata": {},
                 "path": {
                     "type": "string"
                 },

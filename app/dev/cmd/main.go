@@ -45,7 +45,7 @@ var dbSeedCommand = &cobra.Command{
 }
 
 func main() {
-	configPath := "/config/config.yml"
+	configPath := "./env/config.yml"
 	con, err := config.NewConfig(configPath)
 	cfg = con
 	if err != nil {

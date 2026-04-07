@@ -1,0 +1,4 @@
+environment: development
+
+database:
+  dsn: "user:password@tcp(host:3306)/database_name"

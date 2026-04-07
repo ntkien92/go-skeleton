@@ -1,8 +1,6 @@
-version: "3"
-
 services:
   db:
-    image: mysql:8.0.43-debian
+    image: mysql:9.6.0
     container_name: mysql_db
     environment:
       - MYSQL_DATABASE=blogs
@@ -15,23 +13,22 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - blog-api-network
-  local:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.local
-    image: blog-api
-    container_name: blog-api
-    hostname: blog-api
-    depends_on:
-      - db
-    networks:
-      - blog-api-network
-    ports:
-      - 8080:8080
-    tty: true
-    volumes:
-      - ./app:/app
-      - ./config/local.yaml:/config/config.yml
+  # local:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile.local
+  #   image: blog-api
+  #   container_name: blog-api
+  #   hostname: blog-api
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - blog-api-network
+  #   ports:
+  #     - 8080:8080
+  #   tty: true
+  #   volumes:
+  #     - ./app:/app
 
 networks:
   blog-api-network:
